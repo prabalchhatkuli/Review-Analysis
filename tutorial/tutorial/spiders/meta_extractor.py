@@ -1,16 +1,28 @@
 import re
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule, CrawlSpider
+from urllib.parse import urlparse
 
 
 class SpidermanSpider(CrawlSpider):
     name = 'meta_crawler'
-    allowed_domains = ['redvanplumbingandheating.com']
-    start_urls = ['https://www.redvanplumbingandheating.com/']
+    allowed_domains = ['moonshinegrill.com']
+    start_urls = ['https://moonshinegrill.com/']
     decriptionStrings=""
+    keywords = ""
     rules = (
-        Rule(LinkExtractor(allow_domains=['redvanplumbingandheating.com']), follow=True, callback="parse_item"),
+        Rule(LinkExtractor(allow_domains=['moonshinegrill.com']), follow=True, callback="parse_item"),
     )
+
+    # For commandline-arguments
+    # def __init__(self, url='', **kwargs):
+    #     self.start_urls.append(url)
+    #     domain = urlparse(url).netloc
+    #     self.allowed_domains.append(domain)
+    #     self.rules = (
+    #         Rule(LinkExtractor(allow_domains=self.allowed_domains), follow=True, callback="parse_item"),
+    #     )
+    #     super().__init__(**kwargs)  # python3
 
     def parse_item(self, response):
         address = response.url
@@ -30,9 +42,10 @@ class SpidermanSpider(CrawlSpider):
         h2 = response.xpath('//h2//text()').extract_first()
         robot = response.xpath("//meta[@name='robots']/@content").extract_first()
         download_time = response.meta['download_latency']
-        if count_description != 0:
+        if count_description != 0 or len(keywords) !=0:
             self.decriptionStrings+=description
-            yield {'description':self.decriptionStrings}
+            self.keywords+=keywords
+            yield {'description':self.decriptionStrings, 'keywords':self.keywords}
             '''yield {
                 'Address': address,
                 'Address count': count_address,
