@@ -13,6 +13,7 @@ This project summarizes a simple structure of data collection, filtering, analys
   * Scrape_reviews.ipynb --> *contains proposed algorithm for data scraping and extraction*
 
 * **tutorial** --> *contains scrapy crawler environment, used to crawl a business' webpage to extract meta tag*
+* **analysis.pdf** --> *contains report generated as part of the thesis*
 
 ### Built using:
 * **Python 3** in **Anaconda** environment
